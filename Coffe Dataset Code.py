@@ -510,18 +510,36 @@ model.score(X_train,y_train).round(3) #verificando se o modelo foi bem ajustado
 # In[ ]:
 
 
+#Creating an interactive simulator for the predictions
+
+
+def format_number(num):
+    abs_num = abs(num)
+    if abs_num >= 1_000_000_000:
+        formatted_number = f'{num/1_000_000_000:.2f} billion'
+    elif abs_num >= 1_000_000:
+        formatted_number = f'{num/1_000_000:.2f} million'
+    elif abs_num >= 1_000:
+        formatted_number = f'{num/1_000:.2f} thoousand'
+    else:
+        formatted_number = f'{num}'
+    
+    return formatted_number
+    
 production = float(input("Enter in billions the amount of coffee production in Brazil:"))
 production = production*10**9
 
 export = float(input("Enter in billions the amount of coffee exportation from Brazil:"))
 export = export*10**9
 
+
 aux = [[production,export]]
 aux = pd.DataFrame(aux, columns = ["Production","Export"])
 
 qty_import= model.predict(aux)[0]
+qty_import = format_number(qty_import)
 
-print(f"The quantity of Brazilian coffee importation by the USA will be: {qty_import.round(3)} billion.")
+print(f"The quantity of Brazilian coffee importation by the USA will be: {qty_import}")
 
 
 # In[164]:
@@ -529,6 +547,21 @@ print(f"The quantity of Brazilian coffee importation by the USA will be: {qty_im
 
 import ipywidgets as widgets
 from IPython.display import display
+
+
+
+def format_number(num):
+    abs_num = abs(num)
+    if abs_num >= 1_000_000_000:
+        formatted_number = f'{num/1_000_000_000:.2f} billion'
+    elif abs_num >= 1_000_000:
+        formatted_number = f'{num/1_000_000:.2f} million'
+    elif abs_num >= 1_000:
+        formatted_number = f'{num/1_000:.2f} thousand'
+    else:
+        formatted_number = f'{num}'
+    
+    return formatted_number
 
 input_production = widgets.FloatText(description='Production (billion):',layout=widgets.Layout(margin='0 0 0 0'))
 input_export = widgets.FloatText(description='Export (billion):',layout=widgets.Layout(margin='0 0 0 0px'))
@@ -548,8 +581,9 @@ def calculate(aux):
     aux = pd.DataFrame(aux, columns = ["Production","Export"])
 
     qty_import = model.predict(aux)[0]
+    qty_import = format_number(qty_import)
     
-    label_result.value = (f"The quantity of Brazilian coffee importation by the USA will be: {qty_import.round(3)} billion.")
+    label_result.value = (f"The quantity of Brazilian coffee imports by the USA will be: {qty_import} ")
     
     return qty_import
     
