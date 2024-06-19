@@ -593,8 +593,10 @@ button_calculate.on_click(calculate)
 display(widgets.VBox([input_production, input_export, button_calculate, label_result]))
 
 
-# In[ ]:
 
+
+#In[ ]:
+#There is a positive correlation between Brazilian coffee supply and US demand.
 
 
 
